@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pronote Ifran</title>
+  <link rel="stylesheet" href="interface.css">
+</head>
+
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="title">Pronote Ifran</div>
+      <div class="role">Professeur</div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <ul>
+          <li class="menu-item active">
+            <span class="icon">&#128197;</span> Emploi du temps
+          </li>
+          <li class="menu-item">
+            <span class="icon">&#128202;</span> Graphiques
+          </li>
+          <li class="menu-item">
+            <span class="icon">&#128100;</span> Absences
+          </li>
+          <li class="menu-item">
+             Créer Module
+          </li>
+        </ul>
+      </aside>
+      <h1>Créer un Module</h1>
+    <form id="create-module-form">
+        <div>
+            <label for="nom">Nom du Module :</label>
+            <input type="text" id="nom" name="nom" required>
+        </div>
+        <button type="submit">Créer le Module</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('create-module-form');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                const data = {};
+
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                try {
+                    const response = await fetch('/api/modules', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        alert('Module créé avec succès !');
+                        form.reset(); // Réinitialiser le formulaire après la soumission
+                    } else {
+                        alert('Erreur lors de la création du module.');
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la création du module.');
+                }
+            });
+        });
+    </script>
+      
+    </div>

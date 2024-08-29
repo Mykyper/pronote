@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Accueil.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <header>
+        <h1>
+            Pronote IFRAN
+        </h1>
+    </header>
+    <main>
+        <div class="log">
+            <form class="login-form" id="student-login-form">
+                <h1><img src="img/child-solid.svg" alt="Login Icon" class="login-icon"> Espace Etudiant</h1>
+                <label for="email">E-mail :</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+    </main>
+    
+    <script>
+    document.getElementById('student-login-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Empêche l'envoi du formulaire et le rechargement de la page
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Validation des champs
+    if (!email || !password) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/student-login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert('Connexion réussie !');
+            window.location.href = '../eleve_interface.html';
+        } else {
+            alert(`Erreur : ${data.message}`);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        alert('Erreur lors de la connexion.');
+    }
+});
+
+    </script>
+</body>
+</html>

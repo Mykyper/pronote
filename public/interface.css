@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  body {
+    background-color: #f5f5f5;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .header {
+    background-color: blue;
+    color: white;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 1.5em;
+  }
+  
+  .role {
+    font-size: 1.2em;
+  }
+  
+  .layout {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #fff;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+  }
+  
+  .menu-item {
+    padding: 10px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .menu-item .icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+  }
+  
+  .menu-item.active {
+    background-color: #ff6b6b;
+    color: white;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .tab.active {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .timetable {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .note {
+    font-size: 1.1em;
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .modify-button {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .modify-button:hover {
+    background-color: #e74c3c;
+  }
+  

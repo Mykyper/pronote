@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronote Ifran</title>
+    <link rel="stylesheet" href="interface.css">
+    <link rel="stylesheet" href="emploi.css">
+  
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="title">Pronote Ifran</div>
+            <div class="role">Coordinateur</div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <ul>
+                    <li class="menu-item active">
+                        <span class="icon">&#128197;</span> Emploi du temps
+                    </li>
+                    <li class="menu-item">
+                        <span class="icon">&#128202;</span> Graphiques
+                    </li>
+                    <li class="menu-item">
+                        <span class="icon">&#128100;</span> Absences
+                    </li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <h1>Créer l'Emploi du Temps</h1>
+                <form id="schedule-form">
+                    <div class="form-section">
+                        <label for="class">Classe :</label>
+                        <select id="class" name="class_id" required style="width: 150px;">
+                            <!-- Les options seront remplies par JavaScript -->
+                        </select>
+                    </div>
+                    <fieldset>
+                        <legend>Emploi du Temps</legend>
+                        <div id="schedule-days">
+                            <!-- les jours seront automatiquement afficher -->
+                        </div>
+                    </fieldset>
+
+                    <button type="submit">Enregistrer l'Emploi du Temps</button>
+                </form>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', async () => {
+                      
+                        const populateSelect = async (url, selectId, ...nameFields) => {
+                            try {
+                                const response = await fetch(url);
+                                const data = await response.json();
+                                const select = document.getElementById(selectId);
+                                data.forEach(item => {
+                                    const option = document.createElement('option');
+                                    option.value = item.id;
+                                    option.textContent = nameFields.map(field => item[field]).join(' - ');
+                                    select.appendChild(option);
+                                });
+                            } catch (error) {
+                                console.error('Erreur lors du peuplement des options:', error);
+                            }
+                        };
+                    
+                        await populateSelect('/api/classes', 'class', 'niveau', 'specialité');
+                    
+                        // dropdown du prof
+                        const usersResponse = await fetch('/api/users');
+                        const users = await usersResponse.json();
+                        const teachers = users.filter(user => user.role === 'enseignant');
+                    
+                        
+                        const modulesResponse = await fetch('/api/modules');
+                        const modules = await modulesResponse.json();
+                    
+                        const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+                        const scheduleDaysContainer = document.getElementById('schedule-days');
+                    
+                        daysOfWeek.forEach(day => {
+                            const dayDiv = document.createElement('div');
+                            dayDiv.classList.add('day-schedule');
+                            dayDiv.innerHTML = `
+                                <h3>${day}</h3>
+                                <div id="time-slots-${day}">
+                                    <!-- Time slots will be dynamically added here -->
+                                </div>
+                            `;
+                            scheduleDaysContainer.appendChild(dayDiv);
+                    
+                            // heure
+                            const timeSlots = ['09:00-12:00', '14:00-17:00'];
+                    
+                            const timeSlotsContainer = document.getElementById(`time-slots-${day}`);
+                    
+                            timeSlots.forEach(slot => {
+                                const slotDiv = document.createElement('div');
+                                slotDiv.classList.add('form-section');
+                                slotDiv.innerHTML = `
+                                    <label for="${day}-module-${slot}">De ${slot} :</label>
+                                    <select id="${day}-module-${slot}" name="${day}_module_${slot}" required>
+                                        <!-- Module options will be filled by JavaScript -->
+                                    </select>
+                                    <label for="${day}-teacher-${slot}">Enseignant :</label>
+                                    <select id="${day}-teacher-${slot}" name="${day}_teacher_${slot}" required>
+                                        <!-- Teacher options will be filled by JavaScript -->
+                                    </select>
+                                `;
+                                timeSlotsContainer.appendChild(slotDiv);
+                    
+                                // afficher les modules
+                                const moduleSelect = document.getElementById(`${day}-module-${slot}`);
+                                modules.forEach(module => {
+                                    const option = document.createElement('option');
+                                    option.value = module.id;
+                                    option.textContent = module.nom;
+                                    moduleSelect.appendChild(option);
+                                });
+                    
+                                // afficher les prof
+                                const teacherSelect = document.getElementById(`${day}-teacher-${slot}`);
+                                teachers.forEach(teacher => {
+                                    const option = document.createElement('option');
+                                    option.value = teacher.id;
+                                    option.textContent = teacher.prenom;
+                                    teacherSelect.appendChild(option);
+                                });
+                            });
+                        });
+                    
+                        document.getElementById('schedule-form').addEventListener('submit', async (event) => {
+                            event.preventDefault();
+                    
+                            const formData = new FormData(event.target);
+                            const data = {};
+                    
+                            // Conversion en objet json
+                            formData.forEach((value, key) => {
+                                data[key] = value;
+                            });
+                    
+                            // envoi des données
+                            const formattedData = {
+                                class_id: data['class_id'],
+                                lundi: {
+                                    module_id_morning: data['Lundi_module_09:00-12:00'],
+                                    enseignant_id_morning: data['Lundi_teacher_09:00-12:00'],
+                                    module_id_evening: data['Lundi_module_14:00-17:00'],
+                                    enseignant_id_evening: data['Lundi_teacher_14:00-17:00']
+                                },
+                                mardi: {
+                                    module_id_morning: data['Mardi_module_09:00-12:00'],
+                                    enseignant_id_morning: data['Mardi_teacher_09:00-12:00'],
+                                    module_id_evening: data['Mardi_module_14:00-17:00'],
+                                    enseignant_id_evening: data['Mardi_teacher_14:00-17:00']
+                                },
+                                mercredi: {
+                                    module_id_morning: data['Mercredi_module_09:00-12:00'],
+                                    enseignant_id_morning: data['Mercredi_teacher_09:00-12:00'],
+                                    module_id_evening: data['Mercredi_module_14:00-17:00'],
+                                    enseignant_id_evening: data['Mercredi_teacher_14:00-17:00']
+                                },
+                                jeudi: {
+                                    module_id_morning: data['Jeudi_module_09:00-12:00'],
+                                    enseignant_id_morning: data['Jeudi_teacher_09:00-12:00'],
+                                    module_id_evening: data['Jeudi_module_14:00-17:00'],
+                                    enseignant_id_evening: data['Jeudi_teacher_14:00-17:00']
+                                },
+                                vendredi: {
+                                    module_id_morning: data['Vendredi_module_09:00-12:00'],
+                                    enseignant_id_morning: data['Vendredi_teacher_09:00-12:00'],
+                                    module_id_evening: data['Vendredi_module_14:00-17:00'],
+                                    enseignant_id_evening: data['Vendredi_teacher_14:00-17:00']
+                                }
+                            };
+                    
+                            try {
+                                const response = await fetch('/api/emploi-du-temps/add', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(formattedData)
+                                });
+                    
+                                if (response.ok) {
+                                    alert('Emploi du temps enregistré avec succès !');
+                                    event.target.reset(); // Réinitialiser le formulaire après la soumission
+                                } else {
+                                    alert('Erreur lors de l\'enregistrement de l\'emploi du temps.');
+                                }
+                            } catch (error) {
+                                console.error('Erreur:', error);
+                                alert('Erreur lors de l\'enregistrement de l\'emploi du temps.');
+                            }
+                        });
+                    });
+                    </script>
+                    
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

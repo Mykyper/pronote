@@ -1,0 +1,67 @@
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Sections du formulaire */
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section label {
+    display: block;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.form-section input[type="number"],
+.form-section select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-section input[type="number"]:focus,
+.form-section select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Jours et créneaux horaires */
+.day-schedule {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.day-schedule h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Boutons */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

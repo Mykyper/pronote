@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter un Élève</title>
+</head>
+<body>
+  <h1>Ajouter un Élève</h1>
+  <form id="addStudentForm">
+    <label for="nom">Nom:</label>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="prenom">Prénom:</label>
+    <input type="text" id="prenom" name="prenom" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="password">Mot de passe:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="parent">Parent:</label>
+    <select id="parent" name="parent" required>
+      <!-- Options will be populated by JavaScript -->
+    </select><br><br>
+
+    <label for="classe">Classe:</label>
+    <select id="classe" name="classe" required>
+      <!-- Options will be populated by JavaScript -->
+    </select><br><br>
+
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // chercher parents
+      fetch('api/parents')
+        .then(response => response.json())
+        .then(data => {
+          const parentSelect = document.getElementById('parent');
+          data.forEach(parent => {
+            const option = document.createElement('option');
+            option.value = parent.id;
+            option.textContent = `${parent.nom} ${parent.prenom}`;
+            parentSelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error fetching parents:', error));
+
+      fetch('/api/classes')
+        .then(response => response.json())
+        .then(data => {
+          const classeSelect = document.getElementById('classe');
+          data.forEach(classe => {
+            const option = document.createElement('option');
+            option.value = classe.id;
+            option.textContent = `${classe.niveau} - ${classe.specialité}`;
+            classeSelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error fetching classes:', error));
+
+      // soumettre formulaires
+      document.getElementById('addStudentForm').addEventListener('submit', event => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const studentData = {};
+        formData.forEach((value, key) => {
+          studentData[key] = value;
+        });
+
+        fetch('/api/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Élève ajouté avec succès !');
+          event.target.reset();
+        })
+        .catch(error => console.error('Error adding student:', error));
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+.log {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+}
+
+.log h1 {
+    text-align: Center;
+    margin-bottom: 10px;
+    color: black;
+}
+.log .login-icon {
+    margin-right: 10px;
+    height: 50px;
+}
+.log label {
+    display: block;
+    margin: 10px 0 5px;
+    color: black;
+}
+
+.log input {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.log button {
+    width: 100%;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.log button:hover {
+    background-color: darkblue;
+}

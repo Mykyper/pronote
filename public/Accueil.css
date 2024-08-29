@@ -1,0 +1,54 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('img/eleveifran.jpg');
+}
+header {
+    background-color: blue;
+    width: 100%;
+    height: 60px; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    text-align: center;
+    color: white;
+}
+.log {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.list-item img {
+    margin-right: 20px;
+}
+
+.list-item h2 {
+    margin: 0;
+    font-size: 18px;
+    color: black;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0;
+}

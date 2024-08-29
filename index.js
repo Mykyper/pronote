@@ -46,6 +46,7 @@ app.get('/', (req, res) => {
 app.get('/student-log', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
+
 // Route pour la création d'utilisateur
 app.get('/add-teacher', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'add_teacher.html'));
